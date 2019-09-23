@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <demkatrial>
+            <version>1.0.0</version>
+        </demkatrial>
+    </modules>
+    <global>
+        <blocks>
+            <demkatrial>
+                <class>Demka_Trial_Block</class>
+            </demkatrial>
+        </blocks>
+    </global>
+    <frontend>
+        <routers>
+            <demkatrial>
+                <use>standard</use>
+                <args>
+                    <module>Demka_Trial</module>
+                    <frontName>trial</frontName>
+                </args>
+            </demkatrial>
+        </routers>
+        <layout>
+            <updates>
+                <demkatrial>
+                    <file>demkatrial.xml</file>
+                </demkatrial>
+            </updates>
+        </layout>
+    </frontend>
+</config>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<layout version="1.0.0">
+    <catalog_product_view>
+        <reference name="content">
+            <block type="demkatrial/advertising" name="demkatrial.advertising" template="demkatrial/advertising.phtml"/>
+        </reference>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/demkatrial.css</stylesheet>
+            </action>
+        </reference>
+    </catalog_product_view>
+    <demkatrial_index_index>
+        <reference name="content">
+            <block type="demkatrial/index" name="demkatrial.index" template="demkatrial/index.phtml"/>
+        </reference>
+    </demkatrial_index_index>
+    <demkatrial_index_advertising>
+        <reference name="content">
+            <block type="demkatrial/advertising" name="demkatrial.advertising" template="demkatrial/advertising.phtml"/>
+        </reference>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/demkatrial.css</stylesheet>
+            </action>
+        </reference>
+    </demkatrial_index_advertising>
+</layout>
