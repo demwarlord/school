@@ -1,0 +1,30 @@
+<?php
+$news = $this->getNewsCollection();
+$newsViewUrl = Mage::getUrl('news/index/view');
+?>
+<div class="demka-news-block-wrapper">
+    <h1>News</h1>
+    <div class="demka-news-list-wrapper">
+        <div class="demka-news-list-pager-wrapper">
+            <?php echo $this->getPagerHtml(); ?>
+            <div class="clearfix"></div>
+        </div>
+        <?php foreach ($news as $item): ?>
+            <div class="demka-news-list-item-wrapper">
+                <h2>
+                    <a href="<?php echo $newsViewUrl; ?>?id=<?php echo $item->getId(); ?>">
+                        <?php echo $item->getTitle(); ?>
+                    </a>
+                </h2>
+                <div class="demka-news-list-item-body">
+                    <img class="demka-news-list-item-image" src="<?php echo $item->getImage(); ?>"/>
+                    <div class="demka-news-list-item-text">
+                        <?php echo $this->truncateNewsItem($item->getContent(), 150) . " ..."; ?>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+

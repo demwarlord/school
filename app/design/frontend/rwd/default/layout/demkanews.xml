@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<layout>
+    <demkanews_index_index>
+        <reference name="content">
+            <block type="demkanews/news" name="news.list" template="demkanews/index.phtml"/>
+        </reference>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/demkanews-styles.css</stylesheet>
+            </action>
+        </reference>
+    </demkanews_index_index>
+    <demkanews_index_view>
+        <reference name="content">
+            <block type="demkanews/view" name="news.content" template="demkanews/view.phtml"/>
+        </reference>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/demkanews-styles.css</stylesheet>
+            </action>
+        </reference>
+    </demkanews_index_view>
+</layout>

@@ -1,0 +1,54 @@
+.demka-news-block-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.demka-news-list-wrapper {
+}
+
+.demka-news-list-pager-wrapper {
+    margin: 10px 0;
+}
+
+.demka-news-list-item-wrapper {
+    margin-bottom: 20px;
+}
+
+.demka-news-list-item-wrapper h2 {
+    font-size: 18px;
+}
+
+.demka-news-list-item-body {
+}
+
+.demka-news-list-item-image {
+    width: 120px;
+    float: left;
+}
+
+.demka-news-list-item-text {
+    width: 75%;
+    float: right;
+}
+
+.demka-news-view-wrapper {
+}
+
+.demka-news-view-image {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    display: block;
+}
+
+.demka-news-view-content p {
+    text-indent: 2em;
+}
+
+.demka-news-view-title {
+    margin-top: 25px;
+}
+
+.clearfix {
+    clear: both;
+}
