@@ -13,9 +13,9 @@ class Demka_News_Block_News extends Mage_Page_Block_Html_Pager
     {
         parent::_prepareLayout();
 
-        /** @var Mage_Page_Block_Html_Pager $pager */
-        $pager = $this->getLayout()->createBlock('page/html_pager', 'custom.pager');
-        $pager->setAvailableLimit(array(2 => 2, 10 => 10, 20 => 20, 'all' => 'all'));
+        /** @var Demka_News_Block_Pager $pager */
+        $pager = $this->getLayout()->createBlock('demkanews/pager', 'custom.pager');
+
         $pager->setCollection($this->getCollection());
         $this->setChild('pager', $pager);
 
