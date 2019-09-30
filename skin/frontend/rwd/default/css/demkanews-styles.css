@@ -49,6 +49,12 @@
     margin-top: 25px;
 }
 
+.demka-product-news-link-wrapper {
+    margin: 15px;
+    border: 1px solid #0d2131;
+    padding: 15px;
+}
+
 .clearfix {
     clear: both;
 }

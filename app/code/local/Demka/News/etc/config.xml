@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Demka_News>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </Demka_News>
     </modules>
     <global>
@@ -37,6 +37,16 @@
                 <class>Demka_News_Block</class>
             </demkanews>
         </blocks>
+        <events>
+            <catalog_product_prepare_save>
+                <observers>
+                    <demkanews_observer>
+                        <model>demkanews/observer</model>
+                        <method>catalogProductPrepareSave</method>
+                    </demkanews_observer>
+                </observers>
+            </catalog_product_prepare_save>
+        </events>
     </global>
     <frontend>
         <routers>

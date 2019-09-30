@@ -6,6 +6,13 @@ class Demka_News_Block_News extends Mage_Page_Block_Html_Pager
     {
         /** @var Demka_News_Model_Resource_News_Collection $collection */
         $collection = Mage::getModel('demkanews/news')->getCollection();
+
+        if ($product_id = $this->getRequest()->getParam('product_id')) {
+            $product = Mage::getModel('catalog/product')->load($product_id);
+            $selectedNews = $product->getData('tsg_news') ?? false;
+            $collection->addFieldToFilter('id', explode(',', $selectedNews));
+        }
+
         $this->setCollection($collection);
     }
 
