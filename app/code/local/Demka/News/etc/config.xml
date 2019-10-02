@@ -26,6 +26,11 @@
                     </table_news>
                 </entities>
             </demkanews_resource>
+            <importexport>
+                <rewrite>
+                    <export_entity_product>Demka_News_Model_Product</export_entity_product>
+                </rewrite>
+            </importexport>
         </models>
         <helpers>
             <demkanews>
