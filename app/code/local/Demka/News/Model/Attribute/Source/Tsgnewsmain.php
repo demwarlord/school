@@ -11,13 +11,20 @@ class Demka_News_Model_Attribute_Source_Tsgnewsmain extends Mage_Eav_Model_Entit
                 'value' => 0
             ]
         ];
-        $selectedNews = Mage::registry('current_product')->getData()['tsg_news'] ?? false;
 
+        $current_product = Mage::registry('current_product');
         /** @var Demka_News_Model_Resource_News_Collection $collection */
         $collection = Mage::getModel('demkanews/news')->getCollection();
 
-        if (!empty($selectedNews)) {
-            $newsList = $collection->addFieldToFilter('id', explode(',', $selectedNews))->load()->getData();
+        if (!empty($current_product)) {
+            $selectedNews = $current_product->getData()['tsg_news'] ?? false;
+
+            if (!empty($selectedNews)) {
+                $newsList = $collection->addFieldToFilter('id', explode(',', $selectedNews))->load()->getData();
+            } else {
+                $newsList = $collection->load()->getData();
+            }
+
         } else {
             $newsList = $collection->load()->getData();
         }

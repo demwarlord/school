@@ -97,8 +97,8 @@ try {
         $tsgNewsMain = !empty($tsgNews) ? $tsgNews[mt_rand(0, count($tsgNews) - 1)] : 0;
 
         if (!empty($tsgNews)) {
-            $item['tsg_news'] = empty($tsgNews) ? [] : $tsgNews;
-            $item['tsg_news_main'] = $tsgNewsMain;
+            $item['tsg_news'] = $tsgNews;
+            $item['tsg_main_news'] = (int)$tsgNewsMain;
         }
 
         /** @var Mage_Catalog_Model_Product $modelProduct */
@@ -128,6 +128,7 @@ try {
             ->setCategoryIds([$idCat]);
 
         $modelProduct->addData($item);
+        Mage::log(print_r($modelProduct->getData(), true));
         $modelProduct->save();
     }
 
