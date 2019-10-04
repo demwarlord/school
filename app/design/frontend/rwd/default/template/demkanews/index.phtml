@@ -1,0 +1,39 @@
+<?php
+/** @var Demka_News_Block_News $this */
+/** @var Mage_Core_Model_Mysql4_Collection_Abstract $news */
+$news = $this->getNewsCollection();
+$newsViewUrl = Mage::getUrl('news/index/view');
+
+?>
+<div class="demka-news-block-wrapper">
+    <h1>News</h1>
+    <?php if (empty($news->getItems())): ?>
+        <h2>There is no linked news</h2>
+    <?php else: ?>
+        <div class="demka-news-list-wrapper">
+            <div class="demka-news-list-pager-wrapper">
+                <?php echo $this->getSorterHtml(); ?>
+                <?php echo $this->getPagerHtml(); ?>
+                <div class="clearfix"></div>
+            </div>
+            <?php foreach ($news as $item): ?>
+                <div class="demka-news-list-item-wrapper">
+                    <span class="demka-news-list-item-date"><?php echo $this->formatDate($item->getCreated()); ?></span>
+                    <h2>
+                        <a href="<?php echo $newsViewUrl; ?>?id=<?php echo $item->getId(); ?>">
+                            <?php echo $item->getTitle(); ?>
+                        </a>
+                    </h2>
+                    <div class="demka-news-list-item-body">
+                        <img class="demka-news-list-item-image" src="<?php echo $item->getImage(); ?>"/>
+                        <div class="demka-news-list-item-text">
+                            <?php echo $this->truncateNewsItem($item->getContent(), 150) . " ..."; ?>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+</div>
+
