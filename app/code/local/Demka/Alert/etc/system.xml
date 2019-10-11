@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <catalog>
+            <groups>
+                <productalert>
+                    <fields>
+                        <email_price_template_anonymous translate="label">
+                            <label>Price Alert Email Template For Anonymous</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_price_template_anonymous>
+                        <email_stock_template_anonymous translate="label">
+                            <label>Stock Alert Email Template For Anonymous</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_stock_template_anonymous>
+                    </fields>
+                </productalert>
+            </groups>
+        </catalog>
+    </sections>
+</config>

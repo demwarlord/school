@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<layout>
+    <catalog_product_view>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/jquery.modal.min.css</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/jquery.modal.min.js</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/demka-custom.css</name></action>
+        </reference>
+        <remove name="productalert.price" />
+        <remove name="productalert.stock" />
+        <reference name="content">
+            <reference name="product.info">
+                <reference name="alert.urls">
+                    <block type="demkaalert/product_view" name="demkaalert.price" as="demkaalert_price" template="demkaalert/product/view.phtml">
+                        <action method="preparePriceAlertData"/>
+                        <action method="setHtmlClass"><value>alert-price link-price-alert</value></action>
+                        <action method="setSignupLabel" translate="value"><value>Sign up for price alert</value></action>
+                    </block>
+                    <block type="demkaalert/product_view" name="demkaalert.stock" as="demkaalert_stock" template="demkaalert/product/view.phtml">
+                        <action method="prepareStockAlertData"/>
+                        <action method="setHtmlClass"><value>alert-stock link-stock-alert</value></action>
+                        <action method="setSignupLabel" translate="value"><value>Sign up to get notified when this product is back in stock</value></action>
+                    </block>
+                </reference>
+            </reference>
+        </reference>
+    </catalog_product_view>
+</layout>

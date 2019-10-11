@@ -1,0 +1,16 @@
+<?php /* @var $this Demka_Alert_Block_Product_View */ ?>
+<p class="<?php echo $this->getHtmlClass() ?>">
+    <a id="demkaalert-signup-link"
+        <?php if ($this->isLogged()) : ?>
+            href="<?php echo $this->escapeHtml($this->getSignupUrl()) ?>"
+        <?php else: ?>
+            data-url="<?php echo $this->getCurrentUrl(); ?>"
+            data-pid="<?php echo $this->getCurrentProductId(); ?>"
+            rel="modal:open"
+            href="<?php echo $this->getUrl('alert/ajax/getform' . $this->getDemkaBlock()); ?>"
+        <?php endif; ?>
+       title="<?php echo $this->escapeHtml($this->__($this->getSignupLabel())); ?>"
+    >
+        <?php echo $this->escapeHtml($this->__($this->getSignupLabel())); ?>
+    </a>
+</p>

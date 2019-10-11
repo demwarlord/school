@@ -1,0 +1,16 @@
+<?php /** @var Demka_Alert_Block_Ajax_Form $this */ ?>
+<form id="demkaalert-signup-form" method="post" action="<?php echo $this->getUrl('alert/ajax/' . $block); ?>">
+    <input class="required validate-email required-entry" name="email" type="text" placeholder="Enter your e-mail"/>
+    <input id="demkaalert-signup-form-url" type="hidden" name="url" value=""/>
+    <input id="demkaalert-signup-form-pid" type="hidden" name="pid" value=""/>
+    <br/>
+    <button class="button" type="submit">Sign Up</button>
+</form>
+
+<script type="text/javascript">
+    $j(document).ready(function () {
+        new Validation('demkaalert-signup-form');
+        $j('#demkaalert-signup-form-url').val($j("#demkaalert-signup-link").data('url'));
+        $j('#demkaalert-signup-form-pid').val($j("#demkaalert-signup-link").data('pid'));
+    });
+</script>

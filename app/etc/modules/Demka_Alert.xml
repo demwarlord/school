@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Demka_Alert>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Demka_Alert>
+    </modules>
+</config>
