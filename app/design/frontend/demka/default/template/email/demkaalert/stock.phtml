@@ -20,7 +20,7 @@
                     <p>
                         <a href="<?php echo $product->getProductUrl() ?>"><strong><?php echo $this->escapeHtml($product->getName()) ?></strong></a>
                     </p>
-                    <?php $shortDescription = $this->_getFilteredProductShortDescription($product) ?>
+                    <?php $shortDescription = $this->getFilteredProductShortDescription($product) ?>
                     <?php if ($shortDescription): ?>
                         <p><small><?php echo $shortDescription ?></small></p>
                     <?php endif; ?>

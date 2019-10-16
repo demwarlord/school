@@ -1,36 +1,29 @@
 <?php
 
-class Demka_Alert_Block_Email_Stock extends Mage_Core_Block_Template
+class Demka_Alert_Block_Email_Stock extends Demka_Alert_Block_Email_Abstract
 {
-
-    public function _getFilteredProductShortDescription(Mage_Catalog_Model_Product $product)
+    /**
+     * @param string $productId
+     * @param string $customerEmail
+     * @return string
+     * @throws Mage_Core_Model_Store_Exception
+     */
+    public function getProductUnsubscribeUrl(string $productId, string $customerEmail): string
     {
-        $shortDescription = $product->getShortDescription();
-        if ($shortDescription) {
-            $shortDescription = Mage::getSingleton('core/input_filter_maliciousCode')->filter($shortDescription);
-        }
-        return $shortDescription;
-    }
-
-    public function getProductUnsubscribeUrl($productId, $customerEmail)
-    {
-        $params = $this->_getUrlParams();
+        $params = $this->getUrlParams();
         $params['product'] = $productId;
         $params['email'] = $customerEmail;
         return $this->getUrl('alert/unsubscribe/stock', $params);
     }
 
-    protected function _getUrlParams()
+    /**
+     * @param string $customerEmail
+     * @return string
+     * @throws Mage_Core_Model_Store_Exception
+     */
+    public function getUnsubscribeUrl(string $customerEmail): string
     {
-        return array(
-            '_store' => Mage::app()->getStore(),
-            '_store_to_url' => true
-        );
-    }
-
-    public function getUnsubscribeUrl($customerEmail)
-    {
-        $params = $this->_getUrlParams();
+        $params = $this->getUrlParams();
         $params['email'] = $customerEmail;
         return $this->getUrl('alert/unsubscribe/stockAll', $params);
     }

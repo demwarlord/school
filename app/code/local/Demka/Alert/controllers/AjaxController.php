@@ -4,10 +4,25 @@ class Demka_Alert_AjaxController extends Mage_Core_Controller_Front_Action
 {
     public function getFormPriceAction()
     {
-        $this->_showForm(['block' => 'price']);
+        $this->showForm(['block' => Demka_Alert_Model_Email::EMAIL_ALERT_TYPE_PRICE]);
     }
 
-    private function _showForm($data = false)
+    public function getFormStockAction()
+    {
+        $this->showForm(['block' => Demka_Alert_Model_Email::EMAIL_ALERT_TYPE_STOCK]);
+    }
+
+    public function priceAction()
+    {
+        $this->process(Demka_Alert_Model_Email::EMAIL_ALERT_TYPE_PRICE);
+    }
+
+    public function stockAction()
+    {
+        $this->process(Demka_Alert_Model_Email::EMAIL_ALERT_TYPE_STOCK);
+    }
+
+    private function showForm(array $data = [])
     {
         /** @var Mage_Core_Block_Template $form */
         $form = $this->getLayout()->createBlock('core/template', 'custom.form',
@@ -20,17 +35,7 @@ class Demka_Alert_AjaxController extends Mage_Core_Controller_Front_Action
         $this->getResponse()->setBody($form->toHtml());
     }
 
-    public function getFormStockAction()
-    {
-        $this->_showForm(['block' => 'stock']);
-    }
-
-    public function priceAction()
-    {
-        $this->_process('price');
-    }
-
-    private function _process($table)
+    private function process(string $table)
     {
         $session = Mage::getSingleton('catalog/session');
 
@@ -51,26 +56,21 @@ class Demka_Alert_AjaxController extends Mage_Core_Controller_Front_Action
 
             try {
                 switch ($table) {
-                    case 'price':
+                    case Demka_Alert_Model_Email::EMAIL_ALERT_TYPE_PRICE :
                         $model = Mage::getModel('demkaalert/price')
-                            ->setCustomerEmail($email)
-                            ->setProductId($product->getId())
-                            ->setPrice($product->getFinalPrice())
-                            ->setWebsiteId(Mage::app()->getStore()->getWebsiteId())
-                            ->setAddDate(Mage::getModel('core/date')->gmtDate())
-                            ->setStatus(0);
-                        $model->save();
+                            ->setPrice($product->getFinalPrice());
                         break;
-                    case 'stock':
-                        $model = Mage::getModel('demkaalert/stock')
-                            ->setCustomerEmail($email)
-                            ->setProductId($product->getId())
-                            ->setWebsiteId(Mage::app()->getStore()->getWebsiteId())
-                            ->setAddDate(Mage::getModel('core/date')->gmtDate())
-                            ->setStatus(0);
-                        $model->save();
+                    default:
+                        $model = Mage::getModel('demkaalert/stock');
                         break;
                 }
+
+                $model->setCustomerEmail($email)
+                    ->setProductId($product->getId())
+                    ->setWebsiteId(Mage::app()->getStore()->getWebsiteId())
+                    ->setAddDate(Mage::getModel('core/date')->gmtDate())
+                    ->setStatus(0);
+                $model->save();
 
                 $session->addSuccess($this->__('The alert subscription has been saved.'));
                 $this->_redirectUrl($url);
@@ -85,10 +85,5 @@ class Demka_Alert_AjaxController extends Mage_Core_Controller_Front_Action
             $this->_redirect('/');
             return;
         }
-    }
-
-    public function stockAction()
-    {
-        $this->_process('stock');
     }
 }

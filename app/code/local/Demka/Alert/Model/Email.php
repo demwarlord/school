@@ -2,101 +2,155 @@
 
 class Demka_Alert_Model_Email extends Mage_Core_Model_Abstract
 {
+    const EMAIL_ALERT_TYPE_PRICE = 'price';
+    const EMAIL_ALERT_TYPE_STOCK = 'stock';
+    const XML_PATH_EMAIL_IDENTITY = 'catalog/productalert/email_identity';
     const XML_PATH_EMAIL_PRICE_TEMPLATE_ANONYMOUS = 'catalog/productalert/email_price_template_anonymous';
     const XML_PATH_EMAIL_STOCK_TEMPLATE_ANONYMOUS = 'catalog/productalert/email_stock_template_anonymous';
-    const XML_PATH_EMAIL_IDENTITY = 'catalog/productalert/email_identity';
+    /**
+     * @var string
+     */
+    protected $type = null;
+    /**
+     * @var Mage_Core_Model_Website|null
+     */
+    protected $website = null;
+    /**
+     * @var string|null
+     */
+    protected $customerEmail = null;
+    /**
+     * @var string
+     */
+    protected $customerName = 'Anonymous';
+    /**
+     * @var array
+     */
+    protected $priceProducts = array();
+    /**
+     * @var array
+     */
+    protected $stockProducts = array();
 
-    protected $_type = 'price';
+    /**
+     * @var Demka_Alert_Block_Email_Price
+     */
+    protected $priceBlock;
 
-    /** @var Mage_Core_Model_Website $_website */
-    protected $_website;
-    protected $_customerEmail;
-    protected $_customerName = 'Anonymous';
-    protected $_priceProducts = array();
-    protected $_stockProducts = array();
+    /**
+     * @var Demka_Alert_Block_Email_Stock
+     */
+    protected $stockBlock;
 
-    /** @var Demka_Alert_Block_Email_Price $_priceBlock */
-    protected $_priceBlock;
-
-    /** @var Demka_Alert_Block_Email_Stock $_stockBlock */
-    protected $_stockBlock;
-
-    public function getType()
+    /**
+     * @return string
+     */
+    public function getType(): string
     {
-        return $this->_type;
+        return $this->type;
     }
 
-    public function setType($type)
+    /**
+     * @param string $type
+     */
+    public function setType(string $type)
     {
-        $this->_type = $type;
+        $this->type = $type;
     }
 
-    public function setWebsite(Mage_Core_Model_Website $website)
+    /**
+     * @param Mage_Core_Model_Website $website
+     * @return $this
+     */
+    public function setWebsite(Mage_Core_Model_Website $website): self
     {
-        $this->_website = $website;
+        $this->website = $website;
         return $this;
     }
 
-    public function setWebsiteId($websiteId)
+    /**
+     * @param int $websiteId
+     * @return $this
+     * @throws Mage_Core_Exception
+     */
+    public function setWebsiteId(int $websiteId): self
     {
-        $this->_website = Mage::app()->getWebsite($websiteId);
+        $this->website = Mage::app()->getWebsite($websiteId);
         return $this;
     }
 
-    public function setCustomerEmail($email)
+    /**
+     * @param string $email
+     * @return $this
+     */
+    public function setCustomerEmail(string $email): self
     {
-        $this->_customerEmail = $email;
+        $this->customerEmail = $email;
         return $this;
     }
 
-    public function clean()
+    /**
+     * @return $this
+     */
+    public function clean(): self
     {
-        $this->_customerEmail = null;
-        $this->_priceProducts = array();
-        $this->_stockProducts = array();
+        $this->customerEmail = null;
+        $this->priceProducts = array();
+        $this->stockProducts = array();
 
         return $this;
     }
 
-    public function addPriceProduct(Mage_Catalog_Model_Product $product)
+    /**
+     * @param Mage_Catalog_Model_Product $product
+     * @return $this
+     */
+    public function addPriceProduct(Mage_Catalog_Model_Product $product): self
     {
-        $this->_priceProducts[$product->getId()] = $product;
+        $this->priceProducts[$product->getId()] = $product;
         return $this;
     }
 
-    public function addStockProduct(Mage_Catalog_Model_Product $product)
+    /**
+     * @param Mage_Catalog_Model_Product $product
+     * @return $this
+     */
+    public function addStockProduct(Mage_Catalog_Model_Product $product): self
     {
-        $this->_stockProducts[$product->getId()] = $product;
+        $this->stockProducts[$product->getId()] = $product;
         return $this;
     }
 
-    public function send()
+    /**
+     * @return bool
+     */
+    public function send(): bool
     {
-        if (is_null($this->_website) || is_null($this->_customerEmail)) {
+        if (is_null($this->website) || is_null($this->customerEmail)) {
             return false;
         }
 
-        if (($this->_type == 'price' && count($this->_priceProducts) == 0)
-            || ($this->_type == 'stock' && count($this->_stockProducts) == 0)
+        if (($this->type == self::EMAIL_ALERT_TYPE_PRICE && count($this->priceProducts) == 0)
+            || ($this->type == self::EMAIL_ALERT_TYPE_STOCK && count($this->stockProducts) == 0)
         ) {
             return false;
         }
-        if (!$this->_website->getDefaultGroup() || !$this->_website->getDefaultGroup()->getDefaultStore()) {
+        if (!$this->website->getDefaultGroup() || !$this->website->getDefaultGroup()->getDefaultStore()) {
             return false;
         }
 
-        $store = $this->_website->getDefaultGroup()->getDefaultStore();
+        $store = $this->website->getDefaultGroup()->getDefaultStore();
         $storeId = $store->getId();
 
-        if ($this->_type == 'price' &&
+        if ($this->type == self::EMAIL_ALERT_TYPE_PRICE &&
             !Mage::getStoreConfig(self::XML_PATH_EMAIL_PRICE_TEMPLATE_ANONYMOUS, $storeId)) {
             return false;
-        } elseif ($this->_type == 'stock' &&
+        } elseif ($this->type == self::EMAIL_ALERT_TYPE_STOCK &&
             !Mage::getStoreConfig(self::XML_PATH_EMAIL_STOCK_TEMPLATE_ANONYMOUS, $storeId)) {
             return false;
         }
 
-        if ($this->_type != 'price' && $this->_type != 'stock') {
+        if ($this->type != self::EMAIL_ALERT_TYPE_PRICE && $this->type != self::EMAIL_ALERT_TYPE_STOCK) {
             return false;
         }
 
@@ -104,19 +158,19 @@ class Demka_Alert_Model_Email extends Mage_Core_Model_Abstract
         $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId);
         Mage::app()->getTranslator()->init('frontend', true);
 
-        if ($this->_type == 'price') {
+        if ($this->type == self::EMAIL_ALERT_TYPE_PRICE) {
             $block = $this->_getPriceBlock()
                 ->assign([
-                'products' => $this->_priceProducts,
-                'customer_email' => $this->_customerEmail
+                    'products' => $this->priceProducts,
+                    'customer_email' => $this->customerEmail
                 ])
                 ->toHtml();
             $templateId = Mage::getStoreConfig(self::XML_PATH_EMAIL_PRICE_TEMPLATE_ANONYMOUS, $storeId);
         } else {
             $block = $this->_getStockBlock()
                 ->assign([
-                'products' => $this->_stockProducts,
-                'customer_email' => $this->_customerEmail
+                    'products' => $this->stockProducts,
+                    'customer_email' => $this->customerEmail
                 ])
                 ->toHtml();
             $templateId = Mage::getStoreConfig(self::XML_PATH_EMAIL_STOCK_TEMPLATE_ANONYMOUS, $storeId);
@@ -131,10 +185,10 @@ class Demka_Alert_Model_Email extends Mage_Core_Model_Abstract
             ))->sendTransactional(
                 $templateId,
                 Mage::getStoreConfig(self::XML_PATH_EMAIL_IDENTITY, $storeId),
-                $this->_customerEmail,
-                $this->_customerName,
+                $this->customerEmail,
+                $this->customerName,
                 array(
-                    'customerName' => $this->_customerName,
+                    'customerName' => $this->customerName,
                     'alertGrid' => $block
                 )
             );
@@ -142,23 +196,23 @@ class Demka_Alert_Model_Email extends Mage_Core_Model_Abstract
         return true;
     }
 
-    private function _getPriceBlock()
+    private function _getPriceBlock(): Demka_Alert_Block_Email_Price
     {
-        if (is_null($this->_priceBlock)) {
+        if (is_null($this->priceBlock)) {
             $class = Mage::getConfig()->getBlockClassName('demkaalert/email_price');
-            $this->_priceBlock = new $class;
-            $this->_priceBlock->setTemplate('email/demkaalert/price.phtml');
+            $this->priceBlock = new $class;
+            $this->priceBlock->setTemplate('email/demkaalert/price.phtml');
         }
-        return $this->_priceBlock;
+        return $this->priceBlock;
     }
 
-    private function _getStockBlock()
+    private function _getStockBlock(): Demka_Alert_Block_Email_Stock
     {
-        if (is_null($this->_stockBlock)) {
+        if (is_null($this->stockBlock)) {
             $class = Mage::getConfig()->getBlockClassName('demkaalert/email_stock');
-            $this->_stockBlock = new $class;
-            $this->_stockBlock->setTemplate('email/demkaalert/stock.phtml');
+            $this->stockBlock = new $class;
+            $this->stockBlock->setTemplate('email/demkaalert/stock.phtml');
         }
-        return $this->_stockBlock;
+        return $this->stockBlock;
     }
 }
